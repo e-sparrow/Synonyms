@@ -11,7 +11,7 @@ namespace Birdhouse.Extended.Synonyms
 
         public static SynonymStorage CreateStorage()
         {
-            var sheet = SynonymSettings.instance.SynonymsSheet;
+            var sheet = SynonymSettings.Instance.SynonymsSheet;
             
             var storage = new SynonymStorage(sheet.text);
             storage.Initialize();

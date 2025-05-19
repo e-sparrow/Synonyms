@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Birdhouse.Abstractions.Interfaces;
 using Birdhouse.Common.Extensions;
 
@@ -64,10 +65,29 @@ namespace Birdhouse.Extended.Synonyms
             _reverseNameLookup.Clear();
         }
 
-        public string GetBaseName(string variant)
+        public bool IsBaseName(string name)
         {
-            var result = _reverseNameLookup.TryGetValue(variant, out var baseName) ? baseName : variant;
+            var result = _nameSynonyms.Keys.Contains(name);
             return result;
+        }
+
+        public string GetBaseName(string name)
+        {
+            var result = _reverseNameLookup.TryGetValue(name, out var baseName) ? baseName : name;
+            return result;
+        }
+
+        public bool TryGetBaseName(string name, out string result)
+        {
+            var isBaseName = IsBaseName(name);
+            if (isBaseName)
+            {
+                result = name;
+                return true;
+            }
+            
+            var hasBaseName = _reverseNameLookup.TryGetValue(name, out result);
+            return hasBaseName;
         }
 
         public IEnumerable<string> GetNameVariants(string baseName, string temperature)
